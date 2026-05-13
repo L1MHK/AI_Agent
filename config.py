@@ -20,6 +20,6 @@ SERVER_USER = os.getenv("SERVER_USER")
 SERVER_PW = os.getenv("SERVER_PW")
 API_KEY = os.getenv("GEMINI_API_KEY")
 
-TOKEN = os.getenv("TOKEN")
-CHAT_ID = os.getenv("CHAT_ID")
+TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
+CHAT_ID = os.getenv("TELEGRAM_CHAT_ID")
 

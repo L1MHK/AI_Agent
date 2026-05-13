@@ -11,6 +11,7 @@ from google import genai
 from datetime import datetime
 from datetime import timedelta
 import chromadb
+from setup import setup_env
 import asyncio
 import json
 import re
@@ -25,6 +26,12 @@ async def error_handler(update, context):
     #에러 발생 시 상세 내용을 로그에 기록합니다.
     logging.error(msg="Exception while handling an update:", exc_info=context.error)
 """
+
+def check_env():
+    if not os.path.exists(".env"):
+        print("⚠️ 설정 파일(.env)이 없습니다. 초기 설정을 시작합니다.")
+        setup_env()
+
 # --- 1단계: AI에게 명령어 후보 3개를 물어보는 함수 ---
 def get_version_commands_from_ai(os_info, search_term, paths):
     # 1. 보안 규칙 정의 (가이드라인)
@@ -479,6 +486,7 @@ def validateCommands(cve_id, os_info, candidates):
         validated_data = json.loads(json_str)
 
         # 5. 최종 승인된 리스트 반환
+
         return validated_data.get('validated_checks', [])
 
     except Exception as e:
@@ -625,23 +633,25 @@ def ssh_executor(all_cmds):
 
 
 
-# 1. AI 클라이언트 (이름을 ai_client로 변경)
-ai_client = genai.Client(api_key=API_KEY)
-# 2. 텔레그램 봇 생성 
-sec_bot = TelegramSecurityBot(TOKEN, CHAT_ID)
-
-# 3. DB 연결 (이름을 db_client로 변경)
-db_client = chromadb.PersistentClient(path=DB_PATH)
-collection = db_client.get_collection(name=COLLECTION_NAME)
-
-# 4. 점검 대상 오픈소스 
-openSourceList = ["tomcat", "php"]
-checkCEV = "CVE-2026-29111"
 
 
 
 # 5.  
 if __name__ == "__main__":
+    check_env()
+    load_dotenv()
+    # 1. AI 클라이언트 (이름을 ai_client로 변경)
+    ai_client = genai.Client(api_key=API_KEY)
+    # 2. 텔레그램 봇 생성 
+    sec_bot = TelegramSecurityBot(TOKEN, CHAT_ID)
+
+    # 3. DB 연결 (이름을 db_client로 변경)
+    db_client = chromadb.PersistentClient(path=DB_PATH)
+    collection = db_client.get_collection(name=COLLECTION_NAME)
+
+    # 4. 점검 대상 오픈소스 
+    openSourceList = ["tomcat", "php"]
+    checkCEV = "CVE-2026-29111"
     for model in ai_client.models.list():
         print(model.name)
     ssh = paramiko.SSHClient()
@@ -652,8 +662,9 @@ if __name__ == "__main__":
         #target_ip = input_ip if input_ip else SERVER_IP
         # 2. 계정 입력 (기본값: config.py의 SERVER_USER)
         input_user = input(f"👤 접속 계정 [{SERVER_USER}]: ").strip()
+        input_pw = input(f"🔑 계정 패스워드 [{SERVER_PW}]: ").strip()
         #target_user = input_user if input_user else SERVER_USER
-        ssh.connect(hostname=SERVER_IP, username=SERVER_USER, password=SERVER_PW)
+        ssh.connect(hostname=input_ip, username=input_user, password=input_pw)
         
         # main.py 또는 함수 내부
         print(f"🔑 API 키 로드 확인: {API_KEY[:10] if API_KEY else 'FAILED (None)'}...")
