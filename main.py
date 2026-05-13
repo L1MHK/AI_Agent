@@ -11,7 +11,7 @@ from google import genai
 from datetime import datetime
 from datetime import timedelta
 import chromadb
-from setup import setup_env
+from setup import *
 import asyncio
 import json
 import re
@@ -27,10 +27,6 @@ async def error_handler(update, context):
     logging.error(msg="Exception while handling an update:", exc_info=context.error)
 """
 
-def check_env():
-    if not os.path.exists(".env"):
-        print("⚠️ 설정 파일(.env)이 없습니다. 초기 설정을 시작합니다.")
-        setup_env()
 
 # --- 1단계: AI에게 명령어 후보 3개를 물어보는 함수 ---
 def get_version_commands_from_ai(os_info, search_term, paths):
@@ -633,15 +629,13 @@ def ssh_executor(all_cmds):
 
 
 
-
-
-
-# 5.  
 if __name__ == "__main__":
-    check_env()
-    load_dotenv()
+    is_new_setup = setup_env()
+    if is_new_setup or not os.path.exists("./vulnerability_db"):
+        run_db_ingestion()
     # 1. AI 클라이언트 (이름을 ai_client로 변경)
     ai_client = genai.Client(api_key=API_KEY)
+    
     # 2. 텔레그램 봇 생성 
     sec_bot = TelegramSecurityBot(TOKEN, CHAT_ID)
 
