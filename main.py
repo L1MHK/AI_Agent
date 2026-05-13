@@ -226,38 +226,6 @@ def run_remote_find(ssh_client, target_name):
     )
     stdin, stdout, stderr = ssh_client.exec_command(command)
     return [line.strip() for line in stdout.readlines()]
-"""
-def commandInput(ssh_client, cmd):
-    # 위험한 키워드 리스트 (띄어쓰기 포함해서 체크하는 게 정확합니다)
-    forbidden_keywords = [
-        "rm ", "mv ", "dd ", "mkfs", "reboot", "shutdown", 
-        "systemctl stop", "systemctl disable", ">", "wget ", "curl "
-    ]
-    
-    # 명령어에 금지어가 포함되어 있는지 확인
-    clean_cmd = cmd.lower().strip()
-    if any(forbidden in clean_cmd for forbidden in forbidden_keywords):
-        return f"Error: 보안 정책상 허용되지 않는 명령어입니다. ({cmd})"
-
-    try:
-        # 타임아웃을 5초로 설정해서 무한 대기 방지
-        stdin, stdout, stderr = ssh_client.exec_command(cmd, timeout=5)
-        
-        result = stdout.read().decode().strip()
-        error = stderr.read().decode().strip()
-        
-        # 에러가 있더라도 결과(stdout)가 있다면 결과를 우선 반환 (일부 프로그램은 버전 정보를 stderr로 주기도 함)
-        if result:
-            return result
-        if error:
-            return f"Error: {error}"
-            
-        return "No Output"
-        
-    except Exception as e:
-        return f"Error: 명령어 실행 중 예외 발생 ({str(e)})"
-# --- [함수 1] 개별 소프트웨어 정밀 분석 로직 ---
-"""
 def analyze_software_security(item, os_info, ssh):
     """
     한 개의 소프트웨어를 대상으로 [경로찾기 -> 버전추출 -> 분석]을 수행
@@ -621,14 +589,6 @@ def ssh_executor(all_cmds):
     result_report = adminCommandRunner(ssh, all_cmds)
     return result_report
 
-
-
-
-
-
-
-
-
 if __name__ == "__main__":
     is_new_setup = setup_env()
     if is_new_setup or not os.path.exists("./vulnerability_db"):
@@ -646,6 +606,8 @@ if __name__ == "__main__":
     # 4. 점검 대상 오픈소스 
     openSourceList = ["tomcat", "php"]
     checkCEV = "CVE-2026-29111"
+
+
     for model in ai_client.models.list():
         print(model.name)
     ssh = paramiko.SSHClient()
