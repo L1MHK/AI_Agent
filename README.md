@@ -12,17 +12,15 @@ https://nvd.nist.gov/developers/request-an-api-key
 2. **텔레그램 봇 생성**  
 분석된 리포트를 실시간으로 받기 위해 텔레그램 봇이 필요합니다.  
 BotFather를 통해 봇을 생성하고 API Token과 Chat ID를 준비하세요.
-``` 텔레그램 봇 생성 및 설정
-분석된 리포트를 실시간으로 받기 위해 텔레그램 봇과 두 가지 정보(**API Token**, **Chat ID**)가 필요합니다.
-
-**[A] 봇 생성 및 API Token 발급**
-1. 텔레그램에서 **[@BotFather](https://t.me/botfather)**를 검색하여 대화를 시작합니다.
+``` 텔레그램 봇 생성 및 설정 방법
+[A] 봇 생성 및 API Token 발급
+1. 텔레그램에서 [@BotFather](https://t.me/botfather)를 검색하여 대화를 시작합니다.
 2. `/newbot` 명령어를 입력하고, 안내에 따라 봇의 이름과 아이디(반드시 `bot`으로 끝나야 함)를 설정합니다.
-3. 생성 완료 메시지에서 제공되는 **HTTP API Token**을 복사합니다.
+3. 생성 완료 메시지에서 제공되는 HTTP API Token을 복사합니다.
 
-**[B] 메시지를 받을 Chat ID 확인**
+[B] 메시지를 받을 Chat ID 확인
 봇이 메시지를 보낼 대상(본인)의 고유 번호를 알아야 합니다.
-1. 텔레그램에서 **[@userinfobot](https://t.me/userinfobot)**을 검색해 대화를 시작합니다.
+1. 텔레그램에서 [@userinfobot](https://t.me/userinfobot)을 검색해 대화를 시작합니다.
 2. 아무 메시지나 보내면 응답으로 오는 `Id` 숫자(예: `123456789`)가 본인의 Chat ID입니다.
 ```
 3. **점검 대상 서버 정보**
