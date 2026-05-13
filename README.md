@@ -1,5 +1,6 @@
 AI Security Agent 🛡️
-AI를 활용하여 NVD(National Vulnerability Database) 취약점을 분석하고, 서버 상태를 점검하여 텔레그램으로 리포팅하는 자동화 도구입니다.
+AI를 활용하여 NVD(National Vulnerability Database) 취약점을 분석하고,  
+서버 상태를 점검하여 텔레그램으로 리포팅하는 자동화 도구입니다.
 
 🚀 시작하기 전에 (준비물)
 프로젝트를 원활하게 실행하기 위해 다음 사항들이 필요합니다.
@@ -18,15 +19,19 @@ BotFather를 통해 봇을 생성하고 API Token과 Chat ID를 준비하세요.
 ```bash
 $> git clone https://github.com//AI_Agent.git
 $> cd AI_Agent
+```
 2. 가상환경 생성 (최초 1회)
 ```bash
 $> python3 -m venv .venv
 3.  가상환경 활성화 (터미널 켤 때마다)
+```
 ```bash
 $> source .venv/bin/activate
+```
 4. 의존성 라이브러리 설치
 ```bash
 $> pip install -r requirements.txt
+```
 
 
 📖 사용 방법
